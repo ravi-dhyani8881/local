@@ -17,3 +17,6 @@ jobs:
     steps:
     - name: Check out repository code
       uses: actions/checkout@v2
+
+    - name: Log event payload
+      run: echo "${{ toJson(github.event) }}"
