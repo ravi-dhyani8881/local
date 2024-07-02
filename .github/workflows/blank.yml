@@ -20,3 +20,21 @@ jobs:
 
     - name: Log event payload
       run: echo '${{ toJson(github.event) }}' | jq
+
+    - name: Log event payload to a file
+      run: echo '${{ toJson(github.event) }}' | jq '.' > event_payload.json
+
+    - name: Read event payload into environment variable
+      id: read_payload
+      run: echo "EVENT_PAYLOAD=$(cat event_payload.json)" >> $GITHUB_ENV
+
+    - name: Trigger workflow in another repository
+      env:
+        OTHER_REPO_GITHUB_TOKEN: ${{ secrets.OTHER_REPO_GITHUB_TOKEN }}
+        EVENT_PAYLOAD: ${{ env.EVENT_PAYLOAD }}
+      run: |
+        curl -X POST -H "Accept: application/vnd.github.v3+json" \
+        -H "Authorization: token $OTHER_REPO_GITHUB_TOKEN" \
+        https://api.github.com/repos/ravi-dhyani8881/ratting/dispatches \
+        -d "{\"event_type\":\"trigger-second-workflow\", \"client_payload\": $EVENT_PAYLOAD}"
+
