@@ -8,7 +8,7 @@ on:
     branches:
       - main
   repository_dispatch:
-    types: [custom_event]  # Ensure this matches your EVENT_TYPE in the script
+    types: [custom_event]
 
 jobs:
   build:
@@ -18,16 +18,13 @@ jobs:
     - name: Check out repository code
       uses: actions/checkout@v2
 
-    - name: Log event payload
-      run: echo '${{ toJson(github.event) }}' | jq
-
     - name: Log event payload to a file
-      run: echo '${{ toJson(github.event) }}' | jq '.' > event_payload.json
+      run: echo '${{ toJson(github.event) }}' > event_payload.json
 
     - name: Read event payload into environment variable
       id: read_payload
-      run: echo "EVENT_PAYLOAD=$(cat event_payload.json)" >> $GITHUB_ENV
-
+      run: echo "EVENT_PAYLOAD=$(cat event_payload.json | jq -c .)" >> $GITHUB_ENV
+      
     - name: Trigger workflow in another repository
       env:
         OTHER_REPO_GITHUB_TOKEN: ${{ secrets.OTHER_REPO_GITHUB_TOKEN }}
