@@ -55,13 +55,23 @@ jobs:
     #     https://api.github.com/repos/ravi-dhyani8881/Chef-automation-graphiql/dispatches \
     #     -d "{\"event_type\":\"trigger-graphql-automation-workflow\", \"client_payload\": $EVENT_PAYLOAD}"
 
-    - name: Trigger compile graphqlcode
+    # - name: Trigger compile graphqlcode to run
+    #   env:
+    #     OTHER_REPO_GITHUB_TOKEN: ${{ secrets.OTHER_REPO_GITHUB_TOKEN }}
+    #     EVENT_PAYLOAD: ${{ env.EVENT_PAYLOAD }}
+    #   run: |
+    #     curl -X POST -H "Accept: application/vnd.github.v3+json" \
+    #     -H "Authorization: token $OTHER_REPO_GITHUB_TOKEN" \
+    #     https://api.github.com/repos/ravi-dhyani8881/graphql/dispatches \
+    #     -d "{\"event_type\":\"trigger-graphql-code-compile-workflow\", \"client_payload\": $EVENT_PAYLOAD}"
+
+    - name: Trigger compile Solr code to run
       env:
         OTHER_REPO_GITHUB_TOKEN: ${{ secrets.OTHER_REPO_GITHUB_TOKEN }}
         EVENT_PAYLOAD: ${{ env.EVENT_PAYLOAD }}
       run: |
         curl -X POST -H "Accept: application/vnd.github.v3+json" \
         -H "Authorization: token $OTHER_REPO_GITHUB_TOKEN" \
-        https://api.github.com/repos/ravi-dhyani8881/graphql/dispatches \
-        -d "{\"event_type\":\"trigger-graphql-code-compile-workflow\", \"client_payload\": $EVENT_PAYLOAD}"
+        https://api.github.com/repos/ravi-dhyani8881/solr-docker/dispatches \
+        -d "{\"event_type\":\"trigger-solr-docker-code-compile-workflow\", \"client_payload\": $EVENT_PAYLOAD}"
 
