@@ -84,6 +84,19 @@ jobs:
           echo "graph ID  is: $graphID"
           echo "version is: $version"
 
+    - name: Call remote API after build is complete
+      if: ${{ success() }}
+      run: |
+        curl --location --request PUT 'https://chief-snake-exciting.ngrok-free.app/febe/graphVersions/updateContent' \
+        --header 'Content-Type: application/json' \
+        --header 'X-API-Key: 4dec1823-fde8-45c6-8413-8aa8eae04e56' \
+        --header 'X-USER-ID: 7832be86-6fc6-4234-a0bf-46403ac7ada9' \
+        --data '{
+          "ID": "2e92aba0-70a6-468d-95d4-e57f8ebdda31",
+          "isPublished": { "set": "true" }
+        }'
+
+
 #    - name: Trigger compile Solr code to run
 #      env:
 #        OTHER_REPO_GITHUB_TOKEN: ${{ secrets.OTHER_REPO_GITHUB_TOKEN }}
