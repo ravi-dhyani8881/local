@@ -75,6 +75,10 @@ jobs:
         https://api.github.com/repos/ravi-dhyani8881/Chef-automation-voyager/dispatches \
         -d "{\"event_type\":\"trigger-voyager-automation-workflow\", \"client_payload\": $EVENT_PAYLOAD}"
 
+    - name: Extract organization ID
+      run: |
+          organizationID=$(jq -r '.client_payload.data.organizationID' event_payload.json)
+          echo "Organization ID is: $organizationID"
 
 #    - name: Trigger compile Solr code to run
 #      env:
