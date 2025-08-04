@@ -80,6 +80,7 @@ jobs:
           organizationID=$(jq -r '.client_payload.data.organizationID' event_payload.json)
           graphID=$(jq -r '.client_payload.data.graphID' event_payload.json)
           version=$(jq -r '.client_payload.data.version' event_payload.json)
+          ID=$(jq -r '.client_payload.data.ID' event_payload.json)
           echo "Organization ID is: $organizationID"
           echo "graph ID  is: $graphID"
           echo "version is: $version"
@@ -87,14 +88,19 @@ jobs:
     - name: Call remote API after build is complete
       if: ${{ success() }}
       run: |
+        ID=$(jq -r '.client_payload.data.ID' event_payload.json)
+    
         curl --location --request PUT 'https://chief-snake-exciting.ngrok-free.app/febe/graphVersions/updateContent' \
-        --header 'Content-Type: application/json' \
-        --header 'X-API-Key: 4dec1823-fde8-45c6-8413-8aa8eae04e56' \
-        --header 'X-USER-ID: 7832be86-6fc6-4234-a0bf-46403ac7ada9' \
-        --data '{
-          "ID": "2e92aba0-70a6-468d-95d4-e57f8ebdda31",
+          --header 'Content-Type: application/json' \
+          --header 'X-API-Key: 4dec1823-fde8-45c6-8413-8aa8eae04e56' \
+          --header 'X-USER-ID: 7832be86-6fc6-4234-a0bf-46403ac7ada9' \
+          --data @- <<EOF
+        {
+          "ID": "${ID}",
           "isPublished": { "set": "true" }
-        }'
+        }
+        EOF
+
 
 
 #    - name: Trigger compile Solr code to run
