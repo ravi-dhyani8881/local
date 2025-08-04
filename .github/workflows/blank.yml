@@ -78,7 +78,11 @@ jobs:
     - name: Extract organization ID
       run: |
           organizationID=$(jq -r '.client_payload.data.organizationID' event_payload.json)
+          graphID=$(jq -r '.client_payload.data.graphID' event_payload.json)
+          version=$(jq -r '.client_payload.data.version' event_payload.json)
           echo "Organization ID is: $organizationID"
+          echo "graph ID  is: $graphID"
+          echo "version is: $version"
 
 #    - name: Trigger compile Solr code to run
 #      env:
