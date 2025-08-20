@@ -89,7 +89,7 @@ jobs:
       if: ${{ success() }}
       run: |
         ID=$(jq -r '.client_payload.data.ID' event_payload.json)
-    
+        domain=$(jq -r '.client_payload.data.domain' event_payload.json)
         curl --location --request PUT 'https://chief-snake-exciting.ngrok-free.app/febe/graphVersions/updateContent' \
           --header 'Content-Type: application/json' \
           --header 'X-API-Key: 4dec1823-fde8-45c6-8413-8aa8eae04e56' \
@@ -97,6 +97,7 @@ jobs:
           --data @- <<EOF
         {
           "ID": "${ID}",
+          "domain": { "set": "${domain}" },
           "isPublished": { "set": "true" }
         }
         EOF
